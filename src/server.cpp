@@ -130,7 +130,7 @@ void Server::run(){
         for(int i=0;i<trigger_num;++i){
             int curFd = events[i].data.fd;
             if(curFd == srvFd){//new connections
-                if((ret =(acceptConnection()) == -1))continue;
+                if((ret =(acceptConnection() == -1)))continue;
             }
             else{//receive data from clinents
                 filename = root;

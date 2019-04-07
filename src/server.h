@@ -13,7 +13,6 @@
 #include "response.h"
 using namespace std;
 const int MAX_EVENT = 20;
-const int LISTEN_QUE = 1024;
 const int BUFFER_SIZE = 1024;
 class Server:public QThread
 {

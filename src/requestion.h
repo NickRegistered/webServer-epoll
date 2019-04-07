@@ -11,9 +11,9 @@ class Requestion{
 private:
     Requestion();
 public:
-    static char *Method; //请求方法
-    static char *Extn;   //请求文件扩展名
-    static char *URL;  //请求文件路径
+    static char Method[8]; //请求方法
+    static char Extn[8];   //请求文件扩展名
+    static char URL[64];  //请求文件路径
 public:
     static void resolve(char *req);
 

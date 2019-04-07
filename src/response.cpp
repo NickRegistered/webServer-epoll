@@ -1,8 +1,8 @@
 #include "response.h"
 using namespace std;
-char *Response::Stat = new char[32];
-char *Response::CntLen = new char[32];
-char *Response::CntType = new char[32];
+char Response::Stat[32];
+char Response::CntLen[32];
+char Response::CntType[32];
 const map<string, string> ExtnToType = { { ".gif","image/gif" },{ ".mp3","audio/mp3" } ,
                                         { ".ogg","application/ogg" },{ ".mp4","audio/mp4" } ,
                                         { ".webm","video/webm" },{ ".html","text/html" },

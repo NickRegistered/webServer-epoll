@@ -29,7 +29,7 @@ int Server::initServer()
     srvAddr.sin_port = htons(port);
     bind(srvFd,(sockaddr*)&srvAddr,sizeof(srvAddr));
 
-    if((epfd = epoll_create(MAX_EVENT)) == -1){
+    if((epfd = epoll_create1(EPOLL_CLOEXEC)) == -1){
         sendMsg("epoll create failed!\n");
         return -1;
     }
@@ -74,8 +74,8 @@ int Server::receiveRequestion(int clientFd){
     char clientIp[64] = {0};
     ssize_t len = recv(clientFd,recvBuff,BUFFER_SIZE,0);
     if(len == 0){
-        sendMsg("one connectionclosed\n\
-                 IP: "+QString::fromLocal8Bit(inet_ntop(AF_INET,&clientAddr.sin_addr.s_addr,clientIp,sizeof(clientIp)))
+        sendMsg("one connectionclosed,IP: "\
+                +QString::fromLocal8Bit(inet_ntop(AF_INET,&clientAddr.sin_addr.s_addr,clientIp,sizeof(clientIp)))
                  +"  Port: " + QString::number(ntohs(clientAddr.sin_port)) + "\n\n");
         epoll_ctl(epfd,EPOLL_CTL_DEL,clientFd,nullptr);
         return -1;
@@ -87,8 +87,8 @@ int Server::receiveRequestion(int clientFd){
         epoll_ctl(epfd,EPOLL_CTL_DEL,clientFd,nullptr);
         return -1;
     }
-    sendMsg("receive data from \
-            IP: "+QString::fromLocal8Bit(inet_ntop(AF_INET,&clientAddr.sin_addr.s_addr,clientIp,sizeof(clientIp)))
+    sendMsg("receive data from IP: "\
+            +QString::fromLocal8Bit(inet_ntop(AF_INET,&clientAddr.sin_addr.s_addr,clientIp,sizeof(clientIp)))
             +"  Port: " + QString::number(ntohs(clientAddr.sin_port)) + "\n\n");
     Requestion::resolve(recvBuff);
     sendMsg("Requestion Method:"+QString::fromLocal8Bit(Requestion::Method) + "\n"+\
@@ -146,4 +146,5 @@ void Server::run(){
 
 Server::~Server(){
     epoll_ctl(epfd,EPOLL_CTL_DEL,srvFd,nullptr);
+    close(epfd);
 }

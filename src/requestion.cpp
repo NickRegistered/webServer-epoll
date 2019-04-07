@@ -1,7 +1,7 @@
 #include "requestion.h"
-char *Requestion::Method = new char[8];
-char *Requestion::Extn = new char[8];
-char *Requestion::URL = new char[64];
+char Requestion::Method[8];
+char Requestion::Extn[8];
+char Requestion::URL[64];
 void Requestion::resolve(char *req){
     int i=0;
 
